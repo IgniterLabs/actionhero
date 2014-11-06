@@ -103,7 +103,7 @@ var resque = function(api, next){
         //worker.on('poll',            function(queue){              api.log('resque worker #'+(counter+1)+' polling ' + queue, 'debug'); })
         worker.on('job',             function(queue, job){         api.log('resque worker #'+(counter+1)+' working job ' + queue, 'debug', job); })
         worker.on('success',         function(queue, job, result){ api.log('resque worker #'+(counter+1)+' job success ' + queue, 'info', {job: job, result: result}); })
-        worker.on('pause',           function(){                   api.log('resque worker #'+(counter+1)+'  paused', 'debug'); })
+        //worker.on('pause',           function(){                   api.log('resque worker #'+(counter+1)+'  paused', 'debug'); })
         worker.on('failure',         function(queue, job, f){ api.exceptionHandlers.task(f, queue, job) })
         worker.on('error',           function(queue, job, error){ api.exceptionHandlers.task(error, queue, job) })
 
