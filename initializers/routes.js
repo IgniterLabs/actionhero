@@ -1,11 +1,7 @@
-var fs = require('fs');
-
 var routes = function(api, next){
 
   api.routes = {};
   api.routes.routes = {};
-  api.routes.routesFile = api.projectRoot + '/routes.js'; //deprecated, see github issue #450
-  api.routes.routesConfigFile = api.projectRoot + '/config/routes.js';
 
   api.routes.verbs = ['get', 'post', 'put', 'patch', 'delete'];
 
@@ -81,17 +77,8 @@ var routes = function(api, next){
     api.routes.routes = { 'get': [], 'post': [], 'put': [], 'patch' : [], 'delete': [] };
 
     if(!rawRoutes){
-      if(fs.existsSync(api.routes.routesConfigFile)){
+      if(api.config.routes){
         rawRoutes = api.config.routes;
-      }
-      if(fs.existsSync(api.routes.routesFile)){
-        if(rawRoutes){
-          api.log('Multiple routes files detected. By default, config/routes.js has been loaded. Using the routes.js in your project root is deprecated.', 'warning')
-        }else{
-          api.log('Using the routes.js in your project root is deprecated.', 'warning')
-          delete require.cache[require.resolve(api.routes.routesFile)];
-          rawRoutes = require(api.routes.routesFile).routes;
-        }
       }
     }
 
@@ -131,21 +118,7 @@ var routes = function(api, next){
     }
   };
 
-  //depricated, see github issue #450
-  if(fs.existsSync(api.routes.routesConfigFile)){
-    api.routes.loadRoutes();
-    api.watchFileAndAct(api.routes.routesFile, function(){
-      api.routes.loadRoutes();
-    });
-  }else if(fs.existsSync(api.routes.routesFile)){
-    api.routes.loadRoutes();
-    api.watchFileAndAct(api.routes.routesFile, function(){
-      api.routes.loadRoutes();
-    });
-  }else{
-    api.routes.loadRoutes();
-  }  
-  
+  api.routes.loadRoutes();
   next();
 }
 
