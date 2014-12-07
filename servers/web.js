@@ -415,7 +415,7 @@ var web = function(api, options, next){
     };
 
     for(var p in connection.params){
-      if(api.config.general.disableParamScrubbing === true || api.params.postVariables.indexOf(p) >= 0){
+      if((api.config.general.disableParamScrubbing === true || api.params.postVariables.indexOf(p) >= 0) && (api.config.general.filteredParams || []).indexOf(p) === -1 ){
         requesterInformation.receivedParams[p] = connection.params[p];
       }
     }

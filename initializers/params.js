@@ -10,6 +10,10 @@ var params = function(api, next){
     'action',
   ];
 
+  for(i in api.config.general.globalSafeParams){
+    api.params.globalSafeParams.push(api.config.general.globalSafeParams[i])
+  }
+
   api.params.buildPostVariables = function(){
     var postVariables = [];
     api.params.globalSafeParams.forEach(function(p){
